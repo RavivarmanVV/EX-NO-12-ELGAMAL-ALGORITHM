@@ -24,9 +24,72 @@ To Implement ELGAMAL ALGORITHM
 6. Security: The security of the ElGamal algorithm relies on the difficulty of solving the discrete logarithm problem in a large prime field, making it secure for encryption.
 
 ## Program:
+```
+#include <stdio.h>
 
+long long modExp(long long base, long long exp, long long mod)
+{
+    long long result = 1;
+
+    while(exp > 0)
+    {
+        if(exp % 2 == 1)
+        {
+            result = (result * base) % mod;
+        }
+
+        base = (base * base) % mod;
+        exp = exp / 2;
+    }
+
+    return result;
+}
+
+int main()
+{
+    long long p, g;
+    long long privateKeyA, publicKeyA;
+    long long k, message;
+    long long c1, c2;
+    long long decryptedMessage;
+
+    printf("Enter prime number (p): ");
+    scanf("%lld", &p);
+
+    printf("Enter generator (g): ");
+    scanf("%lld", &g);
+
+    printf("Enter Alice'S private key: ");
+    scanf("%lld", &privateKeyA);
+
+    publicKeyA = modExp(g, privateKeyA, p);
+
+    printf("Alice'S Public Key = %lld\n", publicKeyA);
+
+    printf("Enter message to encrypt: ");
+    scanf("%lld", &message);
+
+    printf("Enter random value k: ");
+    scanf("%lld", &k);
+
+    c1 = modExp(g, k, p);
+    c2 = (message * modExp(publicKeyA, k, p)) % p;
+
+    printf("\nEncrypted Cipher Text:\n");
+    printf("C1 = %lld\n", c1);
+    printf("C2 = %lld\n", c2);
+
+    decryptedMessage =
+        (c2 * modExp(c1, p - 1 - privateKeyA, p)) % p;
+
+    printf("\nDecrypted Message = %lld\n", decryptedMessage);
+
+    return 0;
+}
+```
 
 ## Output:
+<img width="1911" height="772" alt="image" src="https://github.com/user-attachments/assets/ca47b197-b0f9-487c-9c24-8c9d5528f92f" />
 
 
 ## Result:
